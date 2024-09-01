@@ -1,6 +1,5 @@
 steps:
 - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-  entrypoint: 'bash'
   args:
   - gcloud
   - functions
@@ -11,6 +10,15 @@ steps:
   - --trigger-http
   - --runtime=python310
   - --allow-unauthenticated
+
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  args:
+  - gcloud
+  - functions
+  - add-iam-policy-binding
+  - function_cicd
+  - --member=allUsers
+  - --role=roles/cloudfunctions.invoker
 
 options:
   logging : CLOUD_LOGGING_ONLY
