@@ -19,3 +19,6 @@ steps:
   - function_cicd
   - --member=allUsers
   - --role=roles/cloudfunctions.invoker
+
+options:
+  logging : CLOUD_LOGGING_ONLY
