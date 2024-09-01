@@ -1,3 +1,5 @@
+import logging
+
 def function_cicd(request):
     """Responds to any HTTP request.
     Args:
@@ -7,10 +9,20 @@ def function_cicd(request):
         Response object using
         `make_response <http://flask.pocoo.org/docs/1.0/api/#flask.Flask.make_response>`.
     """
-    request_json = request.get_json()
+    # Log the incoming request for debugging purposes
+    logging.info(f"Request args: {request.args}")
+    try:
+        request_json = request.get_json(silent=True)
+        logging.info(f"Request JSON: {request_json}")
+    except Exception as e:
+        logging.error(f"Failed to parse JSON: {e}")
+        return f"Failed to parse JSON: {e}", 400
+
+    # Handle the request based on query parameters or JSON payload
     if request.args and 'message' in request.args:
         return request.args.get('message')
     elif request_json and 'message' in request_json:
         return request_json['message']
     else:
-        return f'CloudFunction with v1.0 with CI/CD Pipeline'
+        return 'CloudFunction with v1.0 with CI/CD Pipeline'
+
